@@ -207,7 +207,6 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
     <ul><li>One-time payment</li><li>Windows, macOS and Linux installers</li><li>Free updates for v1</li><li>Works with Resolve Free and Studio</li></ul>
     <button class="btn" id="buyBtn" data-buy>Buy now</button>
     <button class="btn dl" id="dlBtn">Download RGBGain</button>
-    <button class="btn ghost dl" id="resetOwn">Reset purchase (for testing)</button>
     <p class="note">Secure checkout. Download unlocks after payment.</p>
   </aside>
 </div></section>
@@ -300,10 +299,6 @@ $("dlBtn").onclick=()=>{
   else toast("Add your installer link in DOWNLOAD_URL");
 };
 
-// clear the saved purchase (testing)
-function clearOwned(){try{localStorage.removeItem("rgbgain_owned")}catch(e){}document.getElementById("buy").classList.remove("unlocked")}
-$("resetOwn").onclick=()=>{clearOwned();history.replaceState(null,"",location.pathname);toast("Purchase reset. The payment wall is back.")};
-if(location.hash==="#reset")clearOwned();
 // returning from Stripe success URL
 if(location.hash==="#paid"){store.set();toast("Payment received. Download unlocked.")}
 if(store.get())unlock();
