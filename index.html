@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>OberonFX – Plugins for DaVinci Resolve</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#202226;--panel:#2a2d32;--panel2:#33363c;--line:#41454c;--text:#eceef1;--muted:#9aa0aa;
+  --r:#ff4d4d;--g:#3ddc84;--b:#4d8dff;--accent:#ff4d4d;--btn-text:#16171a;
+  color-scheme:dark;box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){
+  --bg:#f1f2f4;--panel:#fff;--panel2:#e8eaee;--line:#d3d6dc;--text:#1b1d21;--muted:#5d636d;--btn-text:#fff;color-scheme:light}}
+:root[data-theme="light"]{--bg:#f1f2f4;--panel:#fff;--panel2:#e8eaee;--line:#d3d6dc;--text:#1b1d21;--muted:#5d636d;--btn-text:#fff;color-scheme:light}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+body{margin:0;background:var(--bg);color:var(--text);font:400 16px/1.6 "DM Sans",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:"Bricolage Grotesque","DM Sans",sans-serif;line-height:1.05;margin:0;letter-spacing:-.02em}
+h1{font-size:clamp(2.6rem,6.5vw,5rem);font-weight:800}
+h2{font-size:clamp(1.9rem,4vw,2.9rem);font-weight:700}
+h3{font-size:1.25rem;font-weight:700}
+p{margin:0}
+a{color:inherit}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+section{padding:96px 0}
+:focus-visible{outline:2px solid var(--b);outline-offset:3px;border-radius:6px}
+
+/* nav */
+nav{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+.logo{font:800 1.2rem "Bricolage Grotesque",sans-serif;text-decoration:none;display:flex;align-items:center;gap:10px}
+.logo i{display:flex;gap:3px}.logo i b{width:6px;height:18px;border-radius:2px}
+.logo i b:nth-child(1){background:var(--r);transform:translateY(3px)}.logo i b:nth-child(2){background:var(--g)}.logo i b:nth-child(3){background:var(--b);transform:translateY(-3px)}
+.links{display:flex;gap:28px;align-items:center;font-size:.95rem;color:var(--muted)}
+.links a{text-decoration:none;transition:color .2s}.links a:hover{color:var(--text)}
+@media(max-width:640px){.links a:not(.btn){display:none}}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;cursor:pointer;font:600 1rem "DM Sans",sans-serif;padding:14px 26px;border-radius:999px;background:var(--text);color:var(--bg);text-decoration:none;transition:transform .2s,box-shadow .2s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 10px 24px -8px color-mix(in srgb,var(--text) 45%,transparent)}
+.btn:active{transform:translateY(0)}
+.btn.sm{padding:9px 18px;font-size:.9rem}
+.btn.ghost{background:transparent;color:var(--text);border:1px solid var(--line);box-shadow:none}
+.btn.ghost:hover{border-color:var(--text)}
+.btn[disabled]{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+
+/* hero */
+.hero{padding:72px 0 40px}
+.hero .wrap{display:grid;grid-template-columns:1fr 1.15fr;gap:56px;align-items:center}
+@media(max-width:900px){.hero .wrap{grid-template-columns:1fr}}
+.hero p.lead{color:var(--muted);font-size:1.15rem;max-width:44ch;margin:22px 0 32px}
+.hero h1 span{display:block;animation:rise .9s cubic-bezier(.2,.8,.2,1) both}
+.hero h1 span:nth-child(2){animation-delay:.12s}.hero h1 span:nth-child(3){animation-delay:.24s}
+@keyframes rise{from{opacity:0;transform:translateY(32px)}to{opacity:1;transform:none}}
+.cta-row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.price-note{color:var(--muted);font-size:.9rem}
+
+/* live demo */
+.demo{background:var(--panel);border:1px solid var(--line);border-radius:20px;overflow:hidden;box-shadow:0 30px 60px -30px rgba(0,0,0,.5)}
+.scene{position:relative;aspect-ratio:16/10;overflow:hidden;background:linear-gradient(#5b7fb8 0%,#e8a87c 55%,#f6d6a8 70%,#2b3a4a 70%)}
+.scene .sun{position:absolute;left:62%;top:42%;width:18%;aspect-ratio:1;border-radius:50%;background:radial-gradient(#fff6d8,#ffd27a 60%,transparent 72%)}
+.scene .hill{position:absolute;bottom:0;left:-10%;width:70%;height:42%;background:#1e2a36;border-radius:60% 40% 0 0}
+.scene .hill.two{left:35%;width:80%;height:34%;background:#16202a;border-radius:50% 50% 0 0}
+.scene .ramp{position:absolute;left:0;right:0;bottom:0;height:9%;background:linear-gradient(90deg,#000,#fff)}
+.scene .chip{position:absolute;top:12px;left:12px;font-size:.75rem;font-weight:600;padding:4px 10px;border-radius:99px;background:rgba(0,0,0,.55);color:#fff}
+.controls{padding:20px 22px 22px;display:grid;gap:14px}
+.ch{display:grid;grid-template-columns:18px 1fr 52px;gap:14px;align-items:center;font-size:.9rem}
+.ch label{font-weight:600}
+.ch output{text-align:right;font-variant-numeric:tabular-nums;color:var(--muted)}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:99px;background:var(--panel2);outline-offset:6px;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--c);border:3px solid var(--panel);box-shadow:0 0 0 1px var(--c);transition:transform .15s}
+input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.2)}
+input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--c);border:3px solid var(--panel)}
+.demo-foot{display:flex;justify-content:space-between;align-items:center;padding-top:6px;color:var(--muted);font-size:.85rem}
+.demo-foot button{background:none;border:0;color:var(--text);cursor:pointer;font:600 .85rem "DM Sans";text-decoration:underline}
+
+/* plugins grid */
+.sec-head{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap;margin-bottom:40px}
+.sec-head p{color:var(--muted);max-width:42ch}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:26px;display:flex;flex-direction:column;gap:14px;transition:border-color .25s,transform .25s}
+.card.main:hover{border-color:var(--r);transform:translateY(-4px)}
+.card .thumb{height:120px;border-radius:12px;background:linear-gradient(90deg,var(--r),var(--g),var(--b));position:relative;overflow:hidden}
+.card .thumb::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 11px,rgba(0,0,0,.18) 11px 12px)}
+.card p{color:var(--muted);font-size:.95rem}
+.card .row{display:flex;justify-content:space-between;align-items:center;margin-top:auto;padding-top:8px}
+.card .price{font:700 1.4rem "Bricolage Grotesque"}
+.card.soon{border-style:dashed;background:transparent;justify-content:center;align-items:flex-start}
+.tag{font-size:.75rem;font-weight:600;padding:3px 10px;border-radius:99px;background:var(--panel2);color:var(--muted)}
+
+/* product detail */
+.detail .wrap{display:grid;grid-template-columns:1fr 1fr;gap:56px}
+@media(max-width:860px){.detail .wrap{grid-template-columns:1fr}}
+.feats{display:grid;gap:22px;margin-top:32px}
+.feats div{padding-left:18px;border-left:3px solid var(--line)}
+.feats div:nth-child(1){border-color:var(--r)}.feats div:nth-child(2){border-color:var(--g)}.feats div:nth-child(3){border-color:var(--b)}
+.feats h3{margin-bottom:4px}.feats p{color:var(--muted)}
+.buy{background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:34px;align-self:start;position:sticky;top:96px}
+.buy .big{font:800 3.6rem "Bricolage Grotesque";letter-spacing:-.03em;line-height:1}
+.buy ul{list-style:none;padding:0;margin:22px 0 26px;display:grid;gap:10px;color:var(--muted);font-size:.95rem}
+.buy li::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--g);margin-right:12px}
+.buy .btn{width:100%}
+.dl{display:none;margin-top:14px}
+.unlocked .dl{display:block}
+.unlocked #buyBtn{display:none}
+.badge-owned{display:none;color:var(--g);font-weight:600;margin-bottom:12px}
+.unlocked .badge-owned{display:block}
+
+/* faq */
+details{border-bottom:1px solid var(--line);padding:20px 0}
+summary{cursor:pointer;font-weight:600;list-style:none;display:flex;justify-content:space-between}
+summary::after{content:"+";transition:transform .25s;font-size:1.3rem;line-height:1}
+details[open] summary::after{transform:rotate(45deg)}
+details p{color:var(--muted);margin-top:10px;max-width:62ch}
+footer{border-top:1px solid var(--line);padding:36px 0;color:var(--muted);font-size:.9rem}
+footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+
+/* checkout modal */
+.overlay{position:fixed;inset:0;z-index:50;background:rgba(10,11,13,.65);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .25s}
+.overlay.open{opacity:1;pointer-events:auto}
+.modal{width:100%;max-width:440px;background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:30px;transform:translateY(24px) scale(.97);transition:transform .35s cubic-bezier(.2,.9,.3,1.2);max-height:92vh;overflow:auto}
+.overlay.open .modal{transform:none}
+.modal h3{font-size:1.5rem;margin-bottom:18px}
+.line{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--line)}
+.line.total{font-weight:700;font-size:1.1rem;border:0}
+.field{display:grid;gap:6px;margin:16px 0 4px}
+.field label{font-size:.85rem;font-weight:600}
+.field input{font:inherit;color:var(--text);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.field input:focus{outline:2px solid var(--b);border-color:transparent}
+.err{color:var(--r);font-size:.85rem;min-height:1.2em;margin-top:4px}
+.modal .btn{width:100%;margin-top:8px}
+.note{font-size:.8rem;color:var(--muted);margin-top:14px;text-align:center}
+.x{float:right;background:none;border:0;color:var(--muted);font-size:1.6rem;cursor:pointer;line-height:1}
+.success{text-align:center;padding:10px 0}
+.success svg{width:64px;height:64px;margin-bottom:12px}
+.success circle,.success path{fill:none;stroke:var(--g);stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:200;stroke-dashoffset:200;animation:draw .7s .1s forwards}
+.success path{animation-delay:.5s;stroke-dasharray:60;stroke-dashoffset:60}
+@keyframes draw{to{stroke-dashoffset:0}}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,120px);background:var(--text);color:var(--bg);padding:12px 20px;border-radius:99px;font-weight:600;font-size:.9rem;transition:transform .35s;z-index:60}
+.toast.show{transform:translate(-50%,0)}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="gain" color-interpolation-filters="sRGB"><feComponentTransfer><feFuncR id="fr" type="linear" slope="1"/><feFuncG id="fg" type="linear" slope="1"/><feFuncB id="fb" type="linear" slope="1"/></feComponentTransfer></filter></svg>
+
+<nav><div class="wrap">
+  <a class="logo" href="#top"><i><b></b><b></b><b></b></i>OberonFX</a>
+  <div class="links"><a href="#plugins">Plugins</a><a href="#rgbgain">RGBGain</a><a href="#faq">FAQ</a><a class="btn sm" href="#buy" data-buy>Buy RGBGain</a></div>
+</div></nav>
+
+<header class="hero" id="top"><div class="wrap">
+  <div>
+    <h1><span>Plugins</span><span>for colorists</span><span>who ship.</span></h1>
+    <p class="lead">Small, fast OpenFX tools for DaVinci Resolve. Built for real grading sessions, not feature lists.</p>
+    <div class="cta-row"><a class="btn" href="#buy" data-buy>Get RGBGain – $5</a><a class="btn ghost" href="#plugins">Browse plugins</a></div>
+    <p class="price-note" style="margin-top:16px">One-time payment. No subscription.</p>
+  </div>
+  <div class="demo" aria-label="RGBGain live demo">
+    <div class="scene" id="scene" style="filter:url(#gain)">
+      <div class="sun"></div><div class="hill"></div><div class="hill two"></div><div class="ramp"></div>
+    </div>
+    <div class="controls">
+      <div class="ch" style="--c:var(--r)"><label for="r">R</label><input id="r" type="range" min="0" max="200" value="100"><output id="ro">1.00</output></div>
+      <div class="ch" style="--c:var(--g)"><label for="g">G</label><input id="g" type="range" min="0" max="200" value="100"><output id="go">1.00</output></div>
+      <div class="ch" style="--c:var(--b)"><label for="b">B</label><input id="b" type="range" min="0" max="200" value="100"><output id="bo">1.00</output></div>
+      <div class="demo-foot"><span>Drag the gains. This is the plugin’s core control.</span><button id="reset">Reset</button></div>
+    </div>
+  </div>
+</div></header>
+
+<section id="plugins"><div class="wrap">
+  <div class="sec-head"><h2>Plugins</h2><p>Each plugin installs in under a minute and works in the Color and Edit pages.</p></div>
+  <div class="grid">
+    <article class="card main">
+      <div class="thumb"></div>
+      <div style="display:flex;justify-content:space-between;align-items:center"><h3>RGBGain</h3><span class="tag">Available</span></div>
+      <p>Independent gain control for the red, green and blue channels, with a clean numeric readout.</p>
+      <div class="row"><span class="price">$5</span><a class="btn sm" href="#rgbgain">View details</a></div>
+    </article>
+    <article class="card soon">
+      <span class="tag">In development</span>
+      <h3>Your next plugin</h3>
+      <p>Duplicate this card to add another product. Each one gets its own section.</p>
+    </article>
+  </div>
+</div></section>
+
+<section id="rgbgain" class="detail" style="background:var(--panel);border-block:1px solid var(--line)"><div class="wrap">
+  <div>
+    <h2>RGBGain</h2>
+    <p style="color:var(--muted);margin-top:16px;max-width:46ch">Balance a shot by moving one channel at a time. RGBGain multiplies each channel directly, so what you change is exactly what you see.</p>
+    <div class="feats">
+      <div><h3>Per-channel gain</h3><p>Separate red, green and blue sliders from 0 to 2.00, with a reset on every channel.</p></div>
+      <div><h3>GPU accelerated</h3><p>Runs in real time on 4K timelines using Resolve’s OpenFX pipeline.</p></div>
+      <div><h3>Works anywhere in the node tree</h3><p>Drop it on a clip, a node, a timeline or an adjustment clip.</p></div>
+    </div>
+  </div>
+  <aside class="buy" id="buy">
+    <p class="badge-owned">✓ You own RGBGain</p>
+    <p style="color:var(--muted);margin-bottom:8px">RGBGain license</p>
+    <div class="big">$5</div>
+    <ul><li>One-time payment</li><li>Windows, macOS and Linux installers</li><li>Free updates for v1</li><li>Works with Resolve Free and Studio</li></ul>
+    <button class="btn" id="buyBtn" data-buy>Buy now</button>
+    <button class="btn dl" id="dlBtn">Download RGBGain</button>
+    <button class="btn ghost dl" id="resetOwn">Reset purchase (for testing)</button>
+    <p class="note">Secure checkout. Download unlocks after payment.</p>
+  </aside>
+</div></section>
+
+<section id="faq"><div class="wrap" style="max-width:760px">
+  <h2 style="margin-bottom:28px">Questions</h2>
+  <details><summary>Which versions of DaVinci Resolve are supported?</summary><p>RGBGain works with Resolve 18 and newer, in both the free and Studio editions.</p></details>
+  <details><summary>How do I install it?</summary><p>Run the installer for your system, restart Resolve, then find RGBGain under OpenFX in the Color page.</p></details>
+  <details><summary>Can I get a refund?</summary><p>Yes. Contact support within 14 days of purchase and you’ll be refunded in full.</p></details>
+</div></section>
+
+<footer><div class="wrap"><span>© 2026 OberonFX</span><span>Not affiliated with Blackmagic Design. DaVinci Resolve is a trademark of Blackmagic Design.</span></div></footer>
+
+<div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="mt">
+  <div class="modal" id="modal">
+    <div id="checkout">
+      <button class="x" id="close" aria-label="Close">×</button>
+      <h3 id="mt">Checkout</h3>
+      <div class="line"><span>RGBGain license</span><span>$5.00</span></div>
+      <div class="line total"><span>Total</span><span>$5.00 USD</span></div>
+      <div class="field"><label for="email">Email for your receipt</label><input id="email" type="email" placeholder="you@studio.com" autocomplete="email"></div>
+      <p class="err" id="err"></p>
+      <button class="btn" id="payBtn">Pay $5.00</button>
+      <p class="note" id="payNote"></p>
+    </div>
+    <div class="success" id="success" hidden>
+      <svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="28"/><path d="M20 33l8 8 16-17"/></svg>
+      <h3 style="margin-bottom:8px">Payment complete</h3>
+      <p style="color:var(--muted)">Your download is unlocked.</p>
+      <button class="btn" id="done" style="margin-top:20px">Continue</button>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+// ---- CONFIG: paste your Stripe Payment Link here (https://dashboard.stripe.com/payment-links).
+// Set the link’s price to $5 and its success URL to this page followed by #paid.
+// Leave empty to run in demo mode, which simulates a payment.
+const PAYMENT_LINK = "https://buy.stripe.com/test_cNi3cwd7j1BUgH52It9MY03";
+const DOWNLOAD_URL = "https://drive.google.com/drive/folders/1OQRHNNbAfwCVAM6Hvjj4p1baMgJwoCxQ?usp=sharing"; // link to your installer (zip) once you host it
+
+const $ = id => document.getElementById(id);
+const store = {
+  get(){try{return localStorage.getItem("rgbgain_owned")==="1"}catch(e){return false}},
+  set(){try{localStorage.setItem("rgbgain_owned","1")}catch(e){}}
+};
+
+// live demo
+const ch = [["r","fr"],["g","fg"],["b","fb"]];
+function update(){
+  ch.forEach(([i,f])=>{const v=$(i).value/100;$(f).setAttribute("slope",v);$(i+"o").textContent=v.toFixed(2)});
+}
+ch.forEach(([i])=>$(i).addEventListener("input",update));
+$("reset").onclick=()=>{ch.forEach(([i])=>{$(i).value=100});update()};
+update();
+
+// toast
+function toast(msg){const t=$("toast");t.textContent=msg;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2600)}
+
+// payment wall
+const ov=$("overlay");
+$("payNote").textContent = PAYMENT_LINK ? "You’ll be redirected to Stripe to pay securely." : "Demo mode: no real charge. Add a Stripe Payment Link to accept payments.";
+function openCheckout(){$("checkout").hidden=false;$("success").hidden=true;ov.classList.add("open");setTimeout(()=>$("email").focus(),300)}
+function closeCheckout(){ov.classList.remove("open")}
+document.querySelectorAll("[data-buy]").forEach(b=>b.addEventListener("click",e=>{
+  if(store.get()){e.preventDefault();document.getElementById("buy").scrollIntoView({behavior:"smooth"});return}
+  if(b.tagName==="A")e.preventDefault();
+  openCheckout();
+}));
+$("close").onclick=closeCheckout;
+ov.addEventListener("click",e=>{if(e.target===ov)closeCheckout()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeCheckout()});
+
+function unlock(){document.getElementById("buy").classList.add("unlocked")}
+$("payBtn").onclick=()=>{
+  const em=$("email").value.trim();
+  if(!/^\S+@\S+\.\S+$/.test(em)){$("err").textContent="Enter a valid email address.";$("email").focus();return}
+  $("err").textContent="";
+  if(PAYMENT_LINK){
+    window.open(PAYMENT_LINK+"?prefilled_email="+encodeURIComponent(em),"_top");
+    return;
+  }
+  const b=$("payBtn");b.disabled=true;b.textContent="Processing…";
+  setTimeout(()=>{b.disabled=false;b.textContent="Pay $5.00";store.set();unlock();$("checkout").hidden=true;$("success").hidden=false},1200);
+};
+$("done").onclick=()=>{closeCheckout();document.getElementById("buy").scrollIntoView({behavior:"smooth"})};
+$("dlBtn").onclick=()=>{
+  if(DOWNLOAD_URL)window.open(DOWNLOAD_URL,"_blank");
+  else toast("Add your installer link in DOWNLOAD_URL");
+};
+
+// clear the saved purchase (testing)
+function clearOwned(){try{localStorage.removeItem("rgbgain_owned")}catch(e){}document.getElementById("buy").classList.remove("unlocked")}
+$("resetOwn").onclick=()=>{clearOwned();history.replaceState(null,"",location.pathname);toast("Purchase reset. The payment wall is back.")};
+if(location.hash==="#reset")clearOwned();
+// returning from Stripe success URL
+if(location.hash==="#paid"){store.set();toast("Payment received. Download unlocked.")}
+if(store.get())unlock();
+</script>
+</body>
+</html>
