@@ -206,7 +206,7 @@ a.card{text-decoration:none;color:inherit}
       <canvas class="cv" id="cv" width="640" height="400" role="img" aria-label="Halftone preview of a sunset"></canvas>
       <div class="controls">
         <div class="seg"><button data-pat="dots" aria-pressed="true">Round dots</button><button data-pat="lines" aria-pressed="false">Lines</button><button data-pat="diamond" aria-pressed="false">Diamond</button><button data-pat="cross" aria-pressed="false">Crosshatch</button></div>
-        <div class="seg"><button data-mode="cmyk" aria-pressed="true">CMYK</button><button data-mode="mono" aria-pressed="false">Monochrome</button></div>
+        <div class="seg"><button data-mode="rgb" aria-pressed="true">RGB</button><button data-mode="mono" aria-pressed="false">Monochrome</button></div>
         <div class="ch" style="--c:var(--r);grid-template-columns:62px 1fr 52px"><label for="sz">Dot size</label><input id="sz" type="range" min="5" max="26" value="10"><output id="szo">10 px</output></div>
         <div class="demo-foot"><span>Try it live. This is a simplified preview of the plugin.</span></div>
       </div>
@@ -242,7 +242,7 @@ a.card{text-decoration:none;color:inherit}
 // In Stripe, set the Payment Link’s success URL to this page followed by #paid.
 const PAYMENT_LINK = "https://buy.stripe.com/bJe6oI9V73K21Mb4QB9MY01";
 const DOWNLOAD_URL = "https://drive.google.com/drive/folders/1vEwv3GglMa76bEdZAZyiyL5EajBpy9Li?usp=sharing";
-const TUTORIAL_URL = "https://youtu.be/ktZmYbzwBYc"; // placeholder, replace with the Retro Halftone tutorial
+const TUTORIAL_URL = "https://www.youtube.com/watch?v=CEhg_OT9QM8"; // placeholder, replace with the Retro Halftone tutorial
 
 const $ = id => document.getElementById(id);
 const store = {
@@ -278,10 +278,11 @@ g=sx.createRadialGradient(410,170,0,410,170,80);g.addColorStop(0,"#fff6d8");g.ad
 sx.fillStyle="#1e2a36";sx.beginPath();sx.ellipse(130,H,260,130,0,Math.PI,2*Math.PI);sx.fill();
 sx.fillStyle="#16202a";sx.beginPath();sx.ellipse(470,H,300,95,0,Math.PI,2*Math.PI);sx.fill();
 const px=sx.getImageData(0,0,W,H).data;
-let pat="dots",mode="cmyk",size=10;
+let pat="dots",mode="rgb",size=10;
 const INK={c:"#00aeef",m:"#ec008c",y:"#ffe600",k:"#1b1b1b"};
 function val(ch,x,y){
   const i=((y|0)*W+(x|0))*4,r=px[i]/255,gg=px[i+1]/255,b=px[i+2]/255;
+  if(ch==="R")return r;if(ch==="G")return gg;if(ch==="B")return b;
   if(ch==="l")return 1-(.299*r+.587*gg+.114*b);
   const k=1-Math.max(r,gg,b);if(ch==="k")return k;
   const d=(1-k)||1;return ch==="c"?(1-r-k)/d:ch==="m"?(1-gg-k)/d:(1-b-k)/d;
@@ -301,9 +302,9 @@ function pass(ch,ang,col){
   cx.restore();
 }
 function render(){
-  cx.globalCompositeOperation="source-over";cx.fillStyle="#f1e8d2";cx.fillRect(0,0,W,H);
-  cx.globalCompositeOperation="multiply";
-  if(mode==="mono")pass("l",45,INK.k);else{pass("c",15,INK.c);pass("m",75,INK.m);pass("y",0,INK.y);pass("k",45,INK.k)}
+  cx.globalCompositeOperation="source-over";cx.fillStyle=mode==="rgb"?"#000":"#f1e8d2";cx.fillRect(0,0,W,H);
+  cx.globalCompositeOperation=mode==="rgb"?"lighter":"multiply";
+  if(mode==="mono")pass("l",45,INK.k);else{pass("R",15,"#f00");pass("G",75,"#0f0");pass("B",45,"#00f")}
   cx.globalCompositeOperation="source-over";
 }
 function seg(attr,set){const bs=document.querySelectorAll("["+attr+"]");bs.forEach(b=>b.onclick=()=>{set(b.getAttribute(attr));bs.forEach(x=>x.setAttribute("aria-pressed",x===b));render()})}
