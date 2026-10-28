@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://oberondhaene.github.io/OberonFX/sitemap.xml
