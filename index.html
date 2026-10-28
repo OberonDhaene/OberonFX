@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>OberonFX – DaVinci Resolve Plugins</title>
+<meta name="description" content="OberonFX makes GPU-accelerated plugins for everyone. Browse effects like Retro Halftone and give your footage a distinctive look.">
+<link rel="canonical" href="https://oberondhaene.github.io/OberonFX/">
+<link rel="icon" type="image/png" href="favicon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="OberonFX">
+<meta property="og:title" content="OberonFX – DaVinci Resolve Plugins">
+<meta property="og:description" content="OberonFX makes GPU-accelerated plugins for everyone. Browse effects like Retro Halftone and give your footage a distinctive look.">
+<meta property="og:url" content="https://oberondhaene.github.io/OberonFX/">
+<meta property="og:image" content="https://oberondhaene.github.io/OberonFX/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="OberonFX – DaVinci Resolve Plugins">
+<meta name="twitter:description" content="OberonFX makes GPU-accelerated plugins for everyone. Browse effects like Retro Halftone and give your footage a distinctive look.">
+<meta name="twitter:image" content="https://oberondhaene.github.io/OberonFX/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav><div class="wrap">
+  <a class="logo" href="./" aria-label="OberonFX home"><img src="logo.png" width="78" height="40" alt="OberonFX"></a>
+  <div class="links"><a href="#plugins">Plugins</a><a href="#team">Hire us</a></div>
+</div></nav>
+
+<main id="home">
+<section id="plugins" style="padding-top:72px"><div class="wrap">
+  <div class="sec-head"><h1 style="font-size:clamp(1.9rem,4vw,2.9rem);font-weight:700">Plugins</h1><p>Native Resolve templates. Drag one onto a clip and dial in your look.</p></div>
+  <div class="grid">
+    <a class="card main" href="retro-halftone/" aria-label="Open Retro Halftone">
+      <div class="thumb ht"></div>
+      <div style="display:flex;justify-content:space-between;align-items:center"><h3>Retro Halftone</h3><span class="tag">Available</span></div>
+      <p>Give your footage the look of old printed media: comics, newspapers, risograph and pop-art posters.</p>
+      <div class="row"><span class="price">$19</span><span class="go">View plugin →</span></div>
+    </a>
+    <article class="card soon">
+      <span class="tag">In development</span>
+      <h3>More coming soon</h3>
+      <p>New OberonFX plugins are on the way.</p>
+    </article>
+  </div>
+</div></section>
+
+
+<section id="team" style="background:var(--panel);border-block:1px solid var(--line)"><div class="wrap">
+  <div class="sec-head" style="margin-bottom:0"><h2>Our team</h2><p style="max-width:60ch">OberonFX is more than just a few drag and drop plugins. We are a constantly evolving and expanding team of editors. Check our details below ⬇️</p></div>
+</div></section>
+</main>
+
+<footer><div class="wrap"><span>© <span id="yr">2026</span> OberonFX</span><span>Not affiliated with Blackmagic Design. DaVinci Resolve is a trademark of Blackmagic Design.</span></div></footer>
+
+<script>
+// Old Stripe success links point at /#paid, so forward them to the plugin page
+if(location.hash==="#paid")location.replace("retro-halftone/#paid");
+document.getElementById("yr").textContent=new Date().getFullYear();
+</script>
+</body>
+</html>
