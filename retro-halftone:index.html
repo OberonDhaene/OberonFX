@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Retro Halftone – Halftone Plugin for DaVinci Resolve | OberonFX</title>
+<meta name="description" content="Retro Halftone is a GPU-accelerated DaVinci Resolve template that gives footage a vintage print look: comic dots, newsprint, risograph and pop art.">
+<link rel="canonical" href="https://oberondhaene.github.io/OberonFX/retro-halftone/">
+<link rel="icon" type="image/png" href="../favicon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="OberonFX">
+<meta property="og:title" content="Retro Halftone – Halftone Plugin for DaVinci Resolve | OberonFX">
+<meta property="og:description" content="Retro Halftone is a GPU-accelerated DaVinci Resolve template that gives footage a vintage print look: comic dots, newsprint, risograph and pop art.">
+<meta property="og:url" content="https://oberondhaene.github.io/OberonFX/retro-halftone/">
+<meta property="og:image" content="https://oberondhaene.github.io/OberonFX/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Retro Halftone – Halftone Plugin for DaVinci Resolve | OberonFX">
+<meta name="twitter:description" content="Retro Halftone is a GPU-accelerated DaVinci Resolve template that gives footage a vintage print look: comic dots, newsprint, risograph and pop art.">
+<meta name="twitter:image" content="https://oberondhaene.github.io/OberonFX/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../style.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Product","name":"Retro Halftone","description":"Retro Halftone is a GPU-accelerated DaVinci Resolve template that gives footage a vintage print look: comic dots, newsprint, risograph and pop art.","image":"https://oberondhaene.github.io/OberonFX/og-image.png","brand":{"@type":"Brand","name":"OberonFX"},"offers":{"@type":"Offer","price":"19.00","priceCurrency":"USD","availability":"https://schema.org/InStock","url":"https://oberondhaene.github.io/OberonFX/retro-halftone/"}}
+</script>
+</head>
+<body>
+<nav><div class="wrap">
+  <a class="logo" href="../" aria-label="OberonFX home"><img src="../logo.png" width="78" height="40" alt="OberonFX"></a>
+  <div class="links"><a href="../#plugins">Plugins</a><a href="../#team">Hire us</a></div>
+</div></nav>
+
+<main>
+<section style="padding-top:48px"><div class="wrap">
+  <a class="back" href="../#plugins">← All plugins</a>
+  <h1 style="font-size:clamp(2.4rem,5vw,3.8rem)">Retro Halftone</h1>
+  <p class="intro">Give your footage the look of old printed media, from comic books and newspapers to risograph prints and pop-art posters. Drag it onto any clip in the Edit page and shape the look with a few sliders.</p>
+  <div class="pg-grid">
+    <div class="demo" aria-label="Retro Halftone live demo">
+      <canvas class="cv" id="cv" width="640" height="400" role="img" aria-label="Halftone preview of a sunset"></canvas>
+      <div class="controls">
+        <div class="seg"><button data-pat="dots" aria-pressed="true">Round dots</button><button data-pat="lines" aria-pressed="false">Lines</button><button data-pat="diamond" aria-pressed="false">Diamond</button><button data-pat="cross" aria-pressed="false">Crosshatch</button></div>
+        <div class="seg"><button data-mode="rgb" aria-pressed="true">RGB</button><button data-mode="mono" aria-pressed="false">Monochrome</button></div>
+        <div class="ch" style="--c:var(--r);grid-template-columns:62px 1fr 52px"><label for="sz">Dot size</label><input id="sz" type="range" min="5" max="26" value="10"><output id="szo">10 px</output></div>
+        <div class="demo-foot"><span>Try it live. This is a simplified preview of the plugin.</span></div>
+      </div>
+    </div>
+    <aside class="buy" id="buy">
+      <p class="badge-owned">✓ You own Retro Halftone</p>
+      <p style="color:var(--muted);margin-bottom:8px">Retro Halftone license</p>
+      <div class="big">$19</div>
+      <ul><li>One-time payment</li><li>Native .drfx template</li><li>GPU-accelerated</li><li>Drag onto any clip in the Edit page</li></ul>
+      <a class="btn" id="buyBtn" href="#">Buy now</a>
+      <button class="btn dl" id="dlBtn">Download Retro Halftone</button>
+      <a class="btn ghost" id="tutBtn" href="#" target="_blank" rel="noopener" style="margin-top:12px">Tutorial</a>
+      <p class="note">Secure checkout with Stripe.</p>
+    </aside>
+  </div>
+  <div class="featgrid">
+    <div class="fcard"><h3>Five halftone styles</h3><p>Dots, lines, diamond, crosshatch or stochastic, with dot sizes from 1 to 50 px.</p></div>
+    <div class="fcard"><h3>Real print colors</h3><p>Black and white newsprint, four-color CMYK without moiré, or bold RGB split. Pick your paper, from bright white to aged newsprint.</p></div>
+    <div class="fcard"><h3>Color grading built in</h3><p>Hue, saturation, gain, lift, gamma and contrast, plus duotone and tri-tone tints.</p></div>
+    <div class="fcard"><h3>Print imperfections</h3><p>Grain, misregistration and paper vignette for a real press feel.</p></div>
+    <div class="fcard"><h3>Animated texture</h3><p>Let the pattern drift and breathe from frame to frame.</p></div>
+    <div class="fcard"><h3>Mix and compare</h3><p>Blend with the original, keep alpha, or use Compare Wipe to see before and after.</p></div>
+  </div>
+</div></section>
+</main>
+
+<footer><div class="wrap"><span>© <span id="yr">2026</span> OberonFX</span><span>Not affiliated with Blackmagic Design. DaVinci Resolve is a trademark of Blackmagic Design.</span></div></footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ---- CONFIG
+// In Stripe, set the Payment Link’s success URL to this page followed by #paid.
+const PAYMENT_LINK = "https://buy.stripe.com/bJe6oI9V73K21Mb4QB9MY01";
+const DOWNLOAD_URL = "https://drive.google.com/drive/folders/1vEwv3GglMa76bEdZAZyiyL5EajBpy9Li?usp=sharing";
+const TUTORIAL_URL = "https://youtu.be/P41u8GJo3FU";
+
+const $ = id => document.getElementById(id);
+const store = {
+  get(){try{return localStorage.getItem("retrohalftone_owned")==="1"}catch(e){return false}},
+  set(){try{localStorage.setItem("retrohalftone_owned","1")}catch(e){}}
+};
+$("yr").textContent = new Date().getFullYear();
+function toast(msg){const t=$("toast");t.textContent=msg;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2600)}
+function unlock(){$("buy").classList.add("unlocked")}
+
+$("buyBtn").href = PAYMENT_LINK;
+$("buyBtn").addEventListener("click",e=>{e.preventDefault();window.open(PAYMENT_LINK,"_top")});
+$("tutBtn").href = TUTORIAL_URL;
+$("dlBtn").onclick=()=>{ if(DOWNLOAD_URL)window.open(DOWNLOAD_URL,"_blank"); else toast("Add your installer link in DOWNLOAD_URL") };
+if(store.get())unlock();
+
+// Success URL for this plugin: this page followed by #paid
+if(location.hash==="#paid"){store.set();unlock();toast("Payment received. Download unlocked.");try{history.replaceState(null,"",location.pathname)}catch(e){}}
+
+// Live halftone preview
+const cv=$("cv"),cx=cv.getContext("2d"),W=cv.width,H=cv.height;
+const sc=document.createElement("canvas");sc.width=W;sc.height=H;const sx=sc.getContext("2d");
+let g=sx.createLinearGradient(0,0,0,H*.7);g.addColorStop(0,"#5b7fb8");g.addColorStop(1,"#f6b47c");sx.fillStyle=g;sx.fillRect(0,0,W,H);
+g=sx.createRadialGradient(410,170,0,410,170,80);g.addColorStop(0,"#fff6d8");g.addColorStop(.6,"#ffd27a");g.addColorStop(1,"rgba(255,210,122,0)");sx.fillStyle=g;sx.fillRect(300,60,220,220);
+sx.fillStyle="#1e2a36";sx.beginPath();sx.ellipse(130,H,260,130,0,Math.PI,2*Math.PI);sx.fill();
+sx.fillStyle="#16202a";sx.beginPath();sx.ellipse(470,H,300,95,0,Math.PI,2*Math.PI);sx.fill();
+const px=sx.getImageData(0,0,W,H).data;
+let pat="dots",mode="rgb",size=10;
+const INK={c:"#00aeef",m:"#ec008c",y:"#ffe600",k:"#1b1b1b"};
+function val(ch,x,y){
+  const i=((y|0)*W+(x|0))*4,r=px[i]/255,gg=px[i+1]/255,b=px[i+2]/255;
+  if(ch==="R")return r;if(ch==="G")return gg;if(ch==="B")return b;
+  if(ch==="l")return 1-(.299*r+.587*gg+.114*b);
+  const k=1-Math.max(r,gg,b);if(ch==="k")return k;
+  const d=(1-k)||1;return ch==="c"?(1-r-k)/d:ch==="m"?(1-gg-k)/d:(1-b-k)/d;
+}
+function pass(ch,ang,col){
+  const s=size,R=Math.hypot(W,H)/2,rad=ang*Math.PI/180,co=Math.cos(rad),si=Math.sin(rad);
+  cx.save();cx.translate(W/2,H/2);cx.rotate(rad);cx.fillStyle=col;
+  for(let u=-R;u<R;u+=s)for(let v=-R;v<R;v+=s){
+    const wx=W/2+u*co-v*si,wy=H/2+u*si+v*co;
+    if(wx<0||wy<0||wx>=W||wy>=H)continue;
+    const a=Math.min(1,Math.max(0,val(ch,wx,wy)));if(a<.03)continue;
+    if(pat==="dots"){cx.beginPath();cx.arc(u,v,s*.72*Math.sqrt(a),0,7);cx.fill()}
+    else if(pat==="lines")cx.fillRect(u-s/2,v-s*a/2,s,s*a);
+    else if(pat==="diamond"){const r=s*.9*Math.sqrt(a);cx.beginPath();cx.moveTo(u,v-r);cx.lineTo(u+r,v);cx.lineTo(u,v+r);cx.lineTo(u-r,v);cx.fill()}
+    else{cx.fillRect(u-s/2,v-s*a*.3,s,s*a*.6);cx.fillRect(u-s*a*.3,v-s/2,s*a*.6,s)}
+  }
+  cx.restore();
+}
+function render(){
+  cx.globalCompositeOperation="source-over";cx.fillStyle=mode==="rgb"?"#000":"#f1e8d2";cx.fillRect(0,0,W,H);
+  cx.globalCompositeOperation=mode==="rgb"?"lighter":"multiply";
+  if(mode==="mono")pass("l",45,INK.k);else{pass("R",15,"#f00");pass("G",75,"#0f0");pass("B",45,"#00f")}
+  cx.globalCompositeOperation="source-over";
+}
+function seg(attr,set){const bs=document.querySelectorAll("["+attr+"]");bs.forEach(b=>b.onclick=()=>{set(b.getAttribute(attr));bs.forEach(x=>x.setAttribute("aria-pressed",x===b));render()})}
+seg("data-pat",v=>pat=v);seg("data-mode",v=>mode=v);
+$("sz").oninput=e=>{size=+e.target.value;$("szo").textContent=size+" px";render()};
+render();
+</script>
+</body>
+</html>
