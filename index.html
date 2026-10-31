@@ -29,20 +29,31 @@
 
 <main id="home">
 <section id="plugins" style="padding-top:72px"><div class="wrap">
-  <div class="sec-head"><h1 style="font-size:clamp(1.9rem,4vw,2.9rem);font-weight:700">Plugins</h1></div>
+  <div class="sec-head" style="margin-bottom:20px"><h1 style="font-size:clamp(1.9rem,4vw,2.9rem);font-weight:700">Plugins</h1></div>
+  <div class="seg" id="filters" role="group" aria-label="Filter by editing software" style="margin-bottom:32px">
+    <button data-filter="all" aria-pressed="true">All</button>
+    <button data-filter="resolve" aria-pressed="false">DaVinci Resolve</button>
+    <button data-filter="premiere" aria-pressed="false">Premiere Pro</button>
+    <button data-filter="avid" aria-pressed="false">Avid Media Composer</button>
+    <button data-filter="vegas" aria-pressed="false">Sony Vegas Pro</button>
+    <button data-filter="hitfilm" aria-pressed="false">HitFilm Express</button>
+    <button data-filter="ae" aria-pressed="false">After Effects</button>
+  </div>
   <div class="grid">
-    <a class="card main" href="retro-halftone/" aria-label="Open Retro Halftone">
+    <a class="card main" data-platforms="resolve" href="retro-halftone/" aria-label="Open Retro Halftone">
       <div class="thumb ht"></div>
       <div style="display:flex;justify-content:space-between;align-items:center"><h3>Retro Halftone</h3><span class="tag">Available</span></div>
+      <div class="tags"><span class="tag">DaVinci Resolve</span></div>
       <p>Give your footage the look of old printed media: comics, newspapers, risograph and pop-art posters.</p>
       <div class="row"><span class="price">$19</span><span class="go">View plugin →</span></div>
     </a>
-    <article class="card soon">
+    <article class="card soon" data-platforms="">
       <span class="tag">In development</span>
       <h3>More coming soon</h3>
       <p>New OberonFX plugins are on the way.</p>
     </article>
   </div>
+  <p id="empty" hidden style="color:var(--muted);margin-top:8px">No plugins for this software yet. More are on the way.</p>
 </div></section>
 
 
@@ -56,6 +67,13 @@
 <script>
 // Old Stripe success links point at /#paid, so forward them to the plugin page
 if(location.hash==="#paid")location.replace("retro-halftone/#paid");
+const fb=document.querySelectorAll("[data-filter]"),cards=document.querySelectorAll("[data-platforms]");
+fb.forEach(b=>b.onclick=()=>{
+  const f=b.dataset.filter;let n=0;
+  fb.forEach(x=>x.setAttribute("aria-pressed",x===b));
+  cards.forEach(c=>{const show=f==="all"||c.dataset.platforms.split(" ").includes(f);c.hidden=!show;if(show&&!c.classList.contains("soon"))n++});
+  document.getElementById("empty").hidden=n>0;
+});
 document.getElementById("yr").textContent=new Date().getFullYear();
 </script>
 </body>
