@@ -159,5 +159,5 @@ a.card{text-decoration:none;color:inherit}
 .card .go{font-weight:600;font-size:.9rem}
 .card:hover .go{text-decoration:underline}
 
-/* blue tags */
-.tag{background:color-mix(in srgb,var(--b) 16%,transparent);color:color-mix(in srgb,var(--b) 65%,var(--text));border:1px solid color-mix(in srgb,var(--b) 35%,transparent)}
+/* blue platform tags */
+.tag.plat{background:color-mix(in srgb,var(--b) 16%,transparent);color:color-mix(in srgb,var(--b) 65%,var(--text));border:1px solid color-mix(in srgb,var(--b) 35%,transparent)}
