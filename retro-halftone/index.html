@@ -19,7 +19,7 @@
 <meta name="twitter:image" content="https://oberondhaene.github.io/OberonFX/og-image.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="../style.css?v=4">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Product","name":"Retro Halftone","description":"Retro Halftone is a GPU-accelerated DaVinci Resolve template that gives footage a vintage print look: comic dots, newsprint, risograph and pop art.","image":"https://oberondhaene.github.io/OberonFX/og-image.png","brand":{"@type":"Brand","name":"OberonFX"},"offers":{"@type":"Offer","price":"19.00","priceCurrency":"USD","availability":"https://schema.org/InStock","url":"https://oberondhaene.github.io/OberonFX/retro-halftone/"}}
 </script>
@@ -36,14 +36,18 @@
   <h1 style="font-size:clamp(2.4rem,5vw,3.8rem)">Retro Halftone</h1>
   <p class="intro">Give your footage the look of old printed media, from comic books and newspapers to risograph prints and pop-art posters. Drag it onto any clip in the Edit page and shape the look with a few sliders.</p>
   <div class="pg-grid">
-    <div class="demo" aria-label="Retro Halftone live demo">
-      <canvas class="cv" id="cv" width="640" height="400" role="img" aria-label="Halftone preview of a sunset"></canvas>
-      <div class="controls">
-        <div class="seg"><button data-pat="dots" aria-pressed="true">Round dots</button><button data-pat="lines" aria-pressed="false">Lines</button><button data-pat="diamond" aria-pressed="false">Diamond</button><button data-pat="cross" aria-pressed="false">Crosshatch</button></div>
-        <div class="seg"><button data-mode="rgb" aria-pressed="true">RGB</button><button data-mode="mono" aria-pressed="false">Monochrome</button></div>
-        <div class="ch" style="--c:var(--r);grid-template-columns:62px 1fr 52px"><label for="sz">Dot size</label><input id="sz" type="range" min="5" max="26" value="10"><output id="szo">10 px</output></div>
-        <div class="demo-foot"><span>Try it live. This is a simplified preview of the plugin.</span></div>
+    <div class="gal" aria-label="Retro Halftone gallery">
+      <div class="stage" id="stage">
+        <div class="cmp" id="cmp">
+          <img id="imgAfter" alt="After: footage with Retro Halftone" draggable="false">
+          <div class="before" id="beforeClip"><img id="imgBefore" alt="Before: original footage" draggable="false"></div>
+          <span class="lbl l">Before</span><span class="lbl r">After</span>
+          <div class="handle" id="handle" role="slider" tabindex="0" aria-label="Compare wipe, drag to compare before and after" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"><span></span></div>
+        </div>
+        <video id="vid" controls playsinline muted loop hidden></video>
+        <img id="pic" alt="Retro Halftone example" hidden>
       </div>
+      <div class="thumbs" id="thumbs"></div>
     </div>
     <aside class="buy" id="buy">
       <p class="badge-owned">✓ You own Retro Halftone</p>
@@ -78,6 +82,18 @@ const PAYMENT_LINK = "https://buy.stripe.com/bJe6oI9V73K21Mb4QB9MY01";
 const DOWNLOAD_URL = "https://drive.google.com/drive/folders/1vEwv3GglMa76bEdZAZyiyL5EajBpy9Li?usp=sharing";
 const TUTORIAL_URL = "https://youtu.be/P41u8GJo3FU";
 
+// ---- MEDIA: put your file names here (files go in the retro-halftone/media folder).
+// You can also paste a full web address (https://...) if a file is hosted elsewhere.
+const MEDIA = {
+  before:   "media/before.jpg",  // still WITHOUT the effect
+  after:    "media/after.jpg",   // still WITH the effect (also the first gallery thumbnail)
+  video2:   "media/2.mp4",       // gallery item 2 (video)
+  video3:   "media/3.mp4",       // gallery item 3 (video)
+  picture4: "media/4.jpg",       // gallery item 4 (picture)
+  poster2:  "",                  // optional preview image for video 2, e.g. "media/2-poster.jpg"
+  poster3:  ""                   // optional preview image for video 3
+};
+
 const $ = id => document.getElementById(id);
 const store = {
   get(){try{return localStorage.getItem("retrohalftone_owned")==="1"}catch(e){return false}},
@@ -96,47 +112,44 @@ if(store.get())unlock();
 // Success URL for this plugin: this page followed by #paid
 if(location.hash==="#paid"){store.set();unlock();toast("Payment received. Download unlocked.");try{history.replaceState(null,"",location.pathname)}catch(e){}}
 
-// Live halftone preview
-const cv=$("cv"),cx=cv.getContext("2d"),W=cv.width,H=cv.height;
-const sc=document.createElement("canvas");sc.width=W;sc.height=H;const sx=sc.getContext("2d");
-let g=sx.createLinearGradient(0,0,0,H*.7);g.addColorStop(0,"#5b7fb8");g.addColorStop(1,"#f6b47c");sx.fillStyle=g;sx.fillRect(0,0,W,H);
-g=sx.createRadialGradient(410,170,0,410,170,80);g.addColorStop(0,"#fff6d8");g.addColorStop(.6,"#ffd27a");g.addColorStop(1,"rgba(255,210,122,0)");sx.fillStyle=g;sx.fillRect(300,60,220,220);
-sx.fillStyle="#1e2a36";sx.beginPath();sx.ellipse(130,H,260,130,0,Math.PI,2*Math.PI);sx.fill();
-sx.fillStyle="#16202a";sx.beginPath();sx.ellipse(470,H,300,95,0,Math.PI,2*Math.PI);sx.fill();
-const px=sx.getImageData(0,0,W,H).data;
-let pat="dots",mode="rgb",size=10;
-const INK={c:"#00aeef",m:"#ec008c",y:"#ffe600",k:"#1b1b1b"};
-function val(ch,x,y){
-  const i=((y|0)*W+(x|0))*4,r=px[i]/255,gg=px[i+1]/255,b=px[i+2]/255;
-  if(ch==="R")return r;if(ch==="G")return gg;if(ch==="B")return b;
-  if(ch==="l")return 1-(.299*r+.587*gg+.114*b);
-  const k=1-Math.max(r,gg,b);if(ch==="k")return k;
-  const d=(1-k)||1;return ch==="c"?(1-r-k)/d:ch==="m"?(1-gg-k)/d:(1-b-k)/d;
+// Gallery with compare wipe
+const items=[
+  {type:"compare",thumb:MEDIA.after,label:"Before and after"},
+  {type:"video",src:MEDIA.video2,poster:MEDIA.poster2,label:"Video 2"},
+  {type:"video",src:MEDIA.video3,poster:MEDIA.poster3,label:"Video 3"},
+  {type:"image",src:MEDIA.picture4,label:"Picture 4"}
+];
+const cmp=$("cmp"),beforeClip=$("beforeClip"),handle=$("handle"),vid=$("vid"),pic=$("pic"),thumbs=$("thumbs");
+function safe(img){img.addEventListener("error",()=>{img.style.opacity=0})}
+[$("imgBefore"),$("imgAfter"),pic].forEach(safe);
+$("imgBefore").src=MEDIA.before;$("imgAfter").src=MEDIA.after;
+
+let pos=50,drag=false;
+function setPos(v){pos=Math.max(0,Math.min(100,v));beforeClip.style.clipPath="inset(0 "+(100-pos)+"% 0 0)";handle.style.left=pos+"%";handle.setAttribute("aria-valuenow",Math.round(pos))}
+function fromEvent(e){const r=cmp.getBoundingClientRect();setPos((e.clientX-r.left)/r.width*100)}
+cmp.addEventListener("pointerdown",e=>{drag=true;cmp.setPointerCapture(e.pointerId);fromEvent(e)});
+cmp.addEventListener("pointermove",e=>{if(drag)fromEvent(e)});
+["pointerup","pointercancel"].forEach(t=>cmp.addEventListener(t,()=>{drag=false}));
+handle.addEventListener("keydown",e=>{if(e.key==="ArrowLeft"){setPos(pos-5);e.preventDefault()}if(e.key==="ArrowRight"){setPos(pos+5);e.preventDefault()}});
+setPos(50);
+
+function show(i){
+  const it=items[i];
+  vid.pause();
+  cmp.hidden=it.type!=="compare";vid.hidden=it.type!=="video";pic.hidden=it.type!=="image";
+  if(it.type==="video"){vid.poster=it.poster||"";vid.src=it.src;vid.play().catch(()=>{})}
+  if(it.type==="image"){pic.style.opacity=1;pic.src=it.src}
+  [...thumbs.children].forEach((b,k)=>b.setAttribute("aria-pressed",k===i));
 }
-function pass(ch,ang,col){
-  const s=size,R=Math.hypot(W,H)/2,rad=ang*Math.PI/180,co=Math.cos(rad),si=Math.sin(rad);
-  cx.save();cx.translate(W/2,H/2);cx.rotate(rad);cx.fillStyle=col;
-  for(let u=-R;u<R;u+=s)for(let v=-R;v<R;v+=s){
-    const wx=W/2+u*co-v*si,wy=H/2+u*si+v*co;
-    if(wx<0||wy<0||wx>=W||wy>=H)continue;
-    const a=Math.min(1,Math.max(0,val(ch,wx,wy)));if(a<.03)continue;
-    if(pat==="dots"){cx.beginPath();cx.arc(u,v,s*.72*Math.sqrt(a),0,7);cx.fill()}
-    else if(pat==="lines")cx.fillRect(u-s/2,v-s*a/2,s,s*a);
-    else if(pat==="diamond"){const r=s*.9*Math.sqrt(a);cx.beginPath();cx.moveTo(u,v-r);cx.lineTo(u+r,v);cx.lineTo(u,v+r);cx.lineTo(u-r,v);cx.fill()}
-    else{cx.fillRect(u-s/2,v-s*a*.3,s,s*a*.6);cx.fillRect(u-s*a*.3,v-s/2,s*a*.6,s)}
-  }
-  cx.restore();
-}
-function render(){
-  cx.globalCompositeOperation="source-over";cx.fillStyle=mode==="rgb"?"#000":"#f1e8d2";cx.fillRect(0,0,W,H);
-  cx.globalCompositeOperation=mode==="rgb"?"lighter":"multiply";
-  if(mode==="mono")pass("l",45,INK.k);else{pass("R",15,"#f00");pass("G",75,"#0f0");pass("B",45,"#00f")}
-  cx.globalCompositeOperation="source-over";
-}
-function seg(attr,set){const bs=document.querySelectorAll("["+attr+"]");bs.forEach(b=>b.onclick=()=>{set(b.getAttribute(attr));bs.forEach(x=>x.setAttribute("aria-pressed",x===b));render()})}
-seg("data-pat",v=>pat=v);seg("data-mode",v=>mode=v);
-$("sz").oninput=e=>{size=+e.target.value;$("szo").textContent=size+" px";render()};
-render();
+items.forEach((it,i)=>{
+  const b=document.createElement("button");
+  b.type="button";b.className="th"+(it.type==="video"?" isvid":"");b.setAttribute("aria-label",it.label);
+  let m;
+  if(it.type==="video"){m=document.createElement("video");m.muted=true;m.preload="metadata";m.playsInline=true;if(it.poster)m.poster=it.poster;m.src=it.src+"#t=0.5"}
+  else{m=document.createElement("img");m.alt="";safe(m);m.src=it.type==="compare"?it.thumb:it.src}
+  b.appendChild(m);b.onclick=()=>show(i);thumbs.appendChild(b);
+});
+show(0);
 </script>
 </body>
 </html>
