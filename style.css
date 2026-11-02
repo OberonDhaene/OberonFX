@@ -161,3 +161,29 @@ a.card{text-decoration:none;color:inherit}
 
 /* blue platform tags */
 .tag.plat{background:color-mix(in srgb,var(--b) 16%,transparent);color:color-mix(in srgb,var(--b) 65%,var(--text));border:1px solid color-mix(in srgb,var(--b) 35%,transparent)}
+
+/* gallery with compare wipe */
+.gal{min-width:0}
+.stage{position:relative;aspect-ratio:16/9;border-radius:20px;overflow:hidden;background:var(--panel2);border:1px solid var(--line)}
+.stage::before{content:"Add your media files in the MEDIA settings";position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:20px;color:var(--muted);font-size:.9rem}
+.cmp{position:absolute;inset:0;cursor:ew-resize;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.cmp img,.before{position:absolute;inset:0;width:100%;height:100%}
+.cmp img{object-fit:cover;display:block;-webkit-user-drag:none}
+.lbl{position:absolute;top:14px;font-size:.75rem;font-weight:600;padding:4px 10px;border-radius:99px;background:rgba(0,0,0,.55);color:#fff;pointer-events:none}
+.lbl.l{left:14px}.lbl.r{right:14px}
+.handle{position:absolute;top:0;bottom:0;width:44px;margin-left:-22px;cursor:ew-resize;display:flex;justify-content:center;touch-action:none}
+.handle::before{content:"";width:3px;height:100%;background:#fff;box-shadow:0 0 12px rgba(0,0,0,.5)}
+.handle span{position:absolute;top:50%;left:50%;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;background:#fff;box-shadow:0 4px 16px rgba(0,0,0,.4);display:grid;place-items:center;color:#111;font:700 18px/1 "DM Sans",sans-serif;letter-spacing:2px}
+.handle span::after{content:"\2039\203A"}
+.stage video,.stage>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#000}
+.thumbs{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:14px}
+.th{position:relative;aspect-ratio:16/10;border-radius:12px;overflow:hidden;border:2px solid transparent;padding:0;background:var(--panel2);cursor:pointer;opacity:.7;transition:opacity .2s,border-color .2s,transform .2s}
+.th:hover{opacity:1;transform:translateY(-2px)}
+.th[aria-pressed=true]{opacity:1;border-color:var(--b)}
+.th img,.th video{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
+.th.isvid::after{content:"\25B6";position:absolute;inset:0;display:grid;place-items:center;color:#fff;font-size:1.2rem;text-shadow:0 1px 8px rgba(0,0,0,.7);pointer-events:none}
+
+/* video thumbnail on the plugin card */
+.card .thumb.vid{height:auto;aspect-ratio:16/9;background:var(--panel2)}
+.card .thumb.vid::after{display:none}
+.card .thumb.vid video{width:100%;height:100%;object-fit:cover;display:block}
